@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    background: #0d0d0d;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    background: #1a1a1a;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 20px;
+}
+
+.image-card img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #222;
+}
