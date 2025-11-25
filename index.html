@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Spicy Gallery — affiliate landing</title>
+  <style>
+    :root{
+      --bg:#0d0d0d;
+      --card:#111;
+      --accent:#ff1133;
+      --muted:#9a9a9a;
+      --glass: rgba(255,255,255,0.06);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#050505,var(--bg));color:#fff}
+    .wrap{max-width:1200px;margin:30px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{
+      width:64px;height:64px;border-radius:8px;overflow:hidden;flex:0 0 64px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      background:var(--glass);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .title{font-size:20px;font-weight:700;letter-spacing:0.2px}
+    .subtitle{font-size:13px;color:var(--muted);margin-top:4px}
+    .age-note{margin-left:auto;font-size:13px;color:var(--muted)}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      transition:transform .18s ease, box-shadow .18s ease;
+      min-height:160px;
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 22px 40px rgba(0,0,0,0.7) }
+    .thumb{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      background:#222;
+    }
+    .meta{
+      padding:12px 14px;
+    }
+    .meta h4{ margin:0 0 6px 0; font-size:16px }
+    .meta p{ margin:0; font-size:13px; color:var(--muted) }
+    /* overlay CTA */
+    .overlay{
+      position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center;
+      pointer-events:none;
+    }
+    .cta{
+      pointer-events:auto;
+      margin:14px;
+      background:linear-gradient(90deg,var(--accent),#ff2e72);
+      padding:10px 14px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow: 0 8px 30px rgba(255,17,51,0.12);
+      transform:translateY(6px);
+      transition: transform .12s ease, opacity .12s;
+      display:inline-flex; gap:10px; align-items:center;
+    }
+    .card:hover .cta{ transform:translateY(0) }
+    .cta small{ font-weight:600; font-size:12px; opacity:.95 }
+    .tag{ position:absolute; left:12px; top:12px;background:rgba(0,0,0,0.45); padding:6px 9px;border-radius:8px;font-size:12px;color:var(--muted) }
+    /* footer */
+    footer{ margin-top:26px; text-align:center; color:var(--muted); font-size:13px }
+    /* age gate */
+    #ageGate{
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(180deg, rgba(0,0,0,0.75), rgba(0,0,0,0.9));
+      z-index:9999; padding:20px;
+    }
+    .ageBox{ background:#0b0b0b; padding:28px; border-radius:12px; width:420px; text-align:center; box-shadow:0 18px 60px rgba(0,0,0,0.7) }
+    .ageBox h2{ margin:0 0 8px 0; font-size:20px }
+    .ageBox p{ color:var(--muted); font-size:14px; margin:0 0 18px }
+    .ageBtns{ display:flex; gap:12px; justify-content:center }
+    .btn{ padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:700; border:0 }
+    .btn-yes{ background:linear-gradient(90deg,var(--accent),#ff2e72); color:#fff }
+    .btn-no{ background:#222; color:var(--muted) }
+    /* small screens */
+    @media (max-width:520px){
+      .thumb{ height:160px }
+      .title{ font-size:16px }
+      .ageBox{ width:92% }
+    }
+  </style>
+</head>
+<body>
+  <!-- AGE GATE (simple) -->
+  <div id="ageGate" aria-hidden="false">
+    <div class="ageBox" role="dialog" aria-modal="true">
+      <h2>Potvrď svůj věk</h2>
+      <p>Stránka obsahuje materiál pouze pro osoby starší 18 let. Klikni <strong>ANO</strong> pokud máš 18+</p>
+      <div class="ageBtns">
+        <button class="btn btn-yes" id="confirmAge">Mám 18+</button>
+        <button class="btn btn-no" id="denyAge">Ne (odchod)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" id="app" style="display:none">
+    <header>
+      <div class="logo">
+        <!-- logo image (uploaded) -->
+        <img src="/mnt/data/A_2D_digital_graphic_design_displays_branding_opti.png" alt="logo" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div>
+        <div class="title">Spicy Gallery</div>
+        <div class="subtitle">Vybrané kousky — klikni a otevře se stránka partnera</div>
+      </div>
+      <div class="age-note">18+ only</div>
+    </header>
+
+    <main>
+      <div class="grid">
+        <!-- CARD 1 -->
+        <article class="card">
+          <div class="tag">Hot</div>
+          <img class="thumb" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=example" alt="thumb 1">
+          <div class="overlay">
+            <!-- REPLACE the href below with your affiliate link -->
+            <a class="cta" href="https://example-affiliate-1.com/?ref=YOUR_AFF_ID" target="_blank" rel="noopener noreferrer nofollow">
+              <span>Otevřít</span>
+              <small>— Partner</small>
+            </a>
+          </div>
+          <div class="meta">
+            <h4>Red Night</h4>
+            <p>Kratší popisek — tease a call-to-action</p>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="card">
+          <div class="tag">Spicy</div>
+          <img class="thumb" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=example2" alt="thumb 2">
+          <div class="overlay">
+            <a class="cta" href="https://example-affiliate-2.com/?ref=YOUR_AFF_ID" target="_blank" rel="noopener noreferrer nofollow">
+              <span>Otevřít</span>
+              <small>— Promo</small>
+            </a>
+          </div>
+          <div class="meta">
+            <h4>Lava Play</h4>
+            <p>Krátký lákací text</p>
+          </div>
+        </article>
+
+        <!-- CARD 3 (using your uploaded image as a thumbnail example) -->
+        <article class="card">
+          <div class="tag">Featured</div>
+          <img class="thumb" src="/mnt/data/A_2D_digital_graphic_design_displays_branding_opti.png" alt="logo-thumb">
+          <div class="overlay">
+            <a class="cta" href="https://example-affiliate-3.com/?ref=YOUR_AFF_ID" target="_blank" rel="noopener noreferrer nofollow">
+              <span>Otevřít</span>
+              <small>— Top</small>
+            </a>
+          </div>
+          <div class="meta">
+            <h4>Feature</h4>
+            <p>Ukázka; nahraď svými obrázky</p>
+          </div>
+        </article>
+
+        <!-- CARD 4 -->
+        <article class="card">
+          <div class="tag">New</div>
+          <img class="thumb" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=example3" alt="thumb 4">
+          <div class="overlay">
+            <a class="cta" href="https://example-affiliate-4.com/?ref=YOUR_AFF_ID" target="_blank" rel="noopener noreferrer nofollow">
+              <span>Otevřít</span>
+              <small>— VIP</small>
+            </a>
+          </div>
+          <div class="meta">
+            <h4>Midnight</h4>
+            <p>Popisek k videu / kolekci</p>
+          </div>
+        </article>
+
+        <!-- Add more cards by copying a .card block and replacing image + affiliate link -->
+      </div>
+    </main>
+
+    <footer>
+      © <span id="year"></span> Spicy Gallery — pro dospělé 18+. Všechny odkazy jsou affiliate.
+    </footer>
+  </div>
+
+  <script>
+    // Age gate logic
+    const ageGate = document.getElementById('ageGate');
+    const app = document.getElementById('app');
+    const confirmBtn = document.getElementById('confirmAge');
+    const denyBtn = document.getElementById('denyAge');
+    confirmBtn.addEventListener('click', () => {
+      ageGate.style.display = 'none';
+      app.style.display = 'block';
+      localStorage.setItem('spicy_age_confirmed','1');
+    });
+    denyBtn.addEventListener('click', () => {
+      // redirect away
+      window.location.href = 'about:blank';
+    });
+    // auto-show if previously confirmed
+    if(localStorage.getItem('spicy_age_confirmed') === '1'){
+      ageGate.style.display = 'none';
+      app.style.display = 'block';
+    }
+    // fill year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
