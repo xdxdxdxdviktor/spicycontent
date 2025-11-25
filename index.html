@@ -1,70 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="juicyads-site-verification" content="2750564a1f84e3fd06bd685516eb1a33">
-    <title>Spicy Web</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <meta name="juicyads-site-verification" content="2750564a1f84e3fd06bd685516eb1a33">
+  <title>Spicy Gallery — affiliate landing</title>
 
-    <!-- Gatekeeper CMP -->
-    <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
-    <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
+  <!-- Gatekeeper CMP -->
+  <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
+  <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
 
-    <!-- Ezoic Standalone Ads -->
-    <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
-    <script>
-        window.ezstandalone = window.ezstandalone || {};
-        ezstandalone.cmd = ezstandalone.cmd || [];
-    </script>
+  <!-- Ezoic Standalone Ads -->
+  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+  <script>
+      window.ezstandalone = window.ezstandalone || {};
+      ezstandalone.cmd = ezstandalone.cmd || [];
+  </script>
+
+  <link rel="stylesheet" href="/assets/style.css">
 </head>
-
 <body>
+  <!-- AGE GATE -->
+  <div id="ageGate" class="modal">
+    <div class="modal-card">
+      <img src="/assets/logo.png" alt="logo" class="modal-logo">
+      <h2>Potvrď svůj věk</h2>
+      <p>Stránka obsahuje materiál pouze pro osoby starší 18 let. Klikni <strong>ANO</strong> pokud máš 18+</p>
+      <div class="modal-actions">
+        <button id="confirmAge" class="btn primary">Mám 18+</button>
+        <button id="denyAge" class="btn ghost">Ne, odejít</button>
+      </div>
+    </div>
+  </div>
 
-    <header>
-        <h1>Spicy Web</h1>
+  <div id="app" class="wrap" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <img src="/assets/logo.png" alt="logo" class="logo">
+        <div class="brand-text">
+          <div class="title">Spicy Gallery</div>
+          <div class="subtitle">Vybrané kousky — klikni a otevře se partner</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input id="search" placeholder="Hledat tag, název..." />
+        <select id="filter">
+          <option value="all">Vše</option>
+          <option value="hot">Hot</option>
+          <option value="spicy">Spicy</option>
+          <option value="featured">Featured</option>
+          <option value="new">New</option>
+        </select>
+        <label class="upload-wrap">
+          <input id="fileInput" type="file" accept="image/*,video/*" hidden>
+          <button class="btn secondary" id="uploadBtn">Nahrát</button>
+        </label>
+      </div>
     </header>
 
+    <!-- Ezoic top ad placeholder -->
+    <div id="ezoic-pub-ad-placeholder-101" class="ad-slot"></div>
+    <script>
+      ezstandalone.cmd.push(function () { ezstandalone.showAds(101); });
+    </script>
+
     <main>
-
-        <!-- Ezoic reklama 101 -->
-        <div id="ezoic-pub-ad-placeholder-101"></div>
-        <script>
-            ezstandalone.cmd.push(function () {
-                ezstandalone.showAds(101);
-            });
-        </script>
-
-        <!-- Grid obrázků -->
-        <div class="gallery">
-            <div class="image-card">
-                <a href="TVŮJ_AFFILIATE_LINK" target="_blank">
-                    <img src="img1.jpg" alt="Spicy Image 1">
-                </a>
-            </div>
-
-            <div class="image-card">
-                <a href="TVŮJ_AFFILIATE_LINK" target="_blank">
-                    <img src="img2.jpg" alt="Spicy Image 2">
-                </a>
-            </div>
-
-            <!-- Sem můžeš přidat další -->
-        </div>
-
-        <!-- Další Ezoic reklamy -->
-        <script>
-            ezstandalone.cmd.push(function () {
-                ezstandalone.showAds(102, 103, 104);
-            });
-        </script>
-
+      <div id="gallery" class="grid"></div>
     </main>
 
-    <footer>
-        <p>© 2025 Spicy Web</p>
-    </footer>
+    <aside class="sidebar">
+      <div class="card">
+        <h4>Promo</h4>
+        <div id="ezoic-pub-ad-placeholder-104"></div>
+        <script>
+          ezstandalone.cmd.push(function () { ezstandalone.showAds(104,105); });
+        </script>
+      </div>
 
+      <div class="card info">
+        <h4>Affiliate tracking</h4>
+        <p>Každý klik jde přes redirect na server (pro tracking a bezpečné cookie nastavení).</p>
+      </div>
+    </aside>
+
+    <footer>
+      <p>© <span id="year"></span> Spicy Gallery — 18+. Všechny odkazy jsou affiliate.</p>
+    </footer>
+  </div>
+
+  <script src="/assets/app.js" defer></script>
+
+  <!-- Ezoic show/hide helpers (example usages for placeholders) -->
+  <script>
+    // initial placeholders calls
+    window.ezstandalone && ezstandalone.cmd.push(function () {
+      ezstandalone.showAds(102,103,104);
+    });
+  </script>
 </body>
 </html>
 
